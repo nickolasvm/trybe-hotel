@@ -17,21 +17,69 @@ namespace TrybeHotel.Repository
 
         public UserDto Login(LoginDto login)
         {
-            throw new NotImplementedException();
+            var user = _context.Users.Where(user => user.Email == login.Email).FirstOrDefault();
+
+            if (user == null || user.Password != login.Password) throw new InvalidOperationException("Incorrect e-mail or password");
+
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                UserType = user.UserType
+            };
         }
+
         public UserDto Add(UserDtoInsert user)
         {
-            throw new NotImplementedException();
+            bool userExist = _context.Users.Any(u => u.Email == user.Email);
+            if (userExist) throw new Exception("User email already exists");
+
+            var newUser = _context.Users.Add(new User
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Password = user.Password,
+                UserType = "client"
+            });
+
+            _context.SaveChanges();
+
+            return new UserDto
+            {
+                UserId = newUser.Entity.UserId,
+                Name = newUser.Entity.Name,
+                Email = newUser.Entity.Email,
+                UserType = newUser.Entity.UserType,
+            };
         }
 
         public UserDto GetUserByEmail(string userEmail)
         {
-             throw new NotImplementedException();
+            var user = _context.Users.Where(user => user.Email == userEmail).FirstOrDefault();
+
+            if (user == null) throw new InvalidOperationException("E-mail not found");
+
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                UserType = user.UserType,
+            };
         }
 
         public IEnumerable<UserDto> GetUsers()
         {
-            throw new NotImplementedException();
+            var users = _context.Users.Select(user => new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                UserType = user.UserType,
+            });
+
+            return users.ToList();
         }
 
     }
