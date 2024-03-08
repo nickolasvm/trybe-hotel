@@ -18,13 +18,25 @@ public class TrybeHotelContext : DbContext, ITrybeHotelContext
     {
         if (!optionsBuilder.IsConfigured)
         {
+            // SQL Server 
+
+            // var connectionString = @"
+            //     Server=localhost;
+            //     Database=TrybeHotel;
+            //     User=SA;
+            //     Password=TrybeHotel12!;
+            //     TrustServerCertificate=True";
+            // optionsBuilder.UseSqlServer(connectionString);
+
+            // MySQL
+
             var connectionString = @"
                 Server=localhost;
-                Database=TrybeHotel;
-                User=SA;
-                Password=TrybeHotel12!;
-                TrustServerCertificate=True";
-            optionsBuilder.UseSqlServer(connectionString);
+                User Id=root;
+                Password=123456;
+                Port=3308;
+                Database=TrybeHotel;";
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), null);
         }
     }
 
