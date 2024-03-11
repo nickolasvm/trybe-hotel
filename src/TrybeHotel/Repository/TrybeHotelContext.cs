@@ -32,10 +32,10 @@ public class TrybeHotelContext : DbContext, ITrybeHotelContext
 
             var connectionString = @"
                 Server=localhost;
-                User Id=root;
-                Password=123456;
                 Port=3308;
-                Database=TrybeHotel;";
+                Database=TrybeHotel;
+                User Id=root;
+                Password=123456;";
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), null);
         }
     }
